@@ -1,6 +1,6 @@
 {
-  "name": "@tryvital/vital-health-react-native",
-  "version": "5.3.3",
+  "name": "@marcholo/vital-health-react-native",
+  "version": "5.3.3-patch.1",
   "description": "Client to access iOS's HealthKit and Android HealthConnect",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
@@ -27,9 +27,9 @@
     "!**/.*"
   ],
   "scripts": {
-    "build": "bob build && yarn run postbuild-copy-expo-plugin",
+    "build": "bob build && npm run postbuild-copy-expo-plugin",
     "clean": "del lib && del android/build && del android/.gradle",
-    "prepack": "yarn run clean && yarn run build",
+    "prepack": "npm run clean && npm run build",
     "np": "np --no-publish",
     "test": "jest",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
@@ -40,14 +40,12 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/tryVital/vital-health-react-native",
-  "author": "Vital",
-  "bugs": {
-    "url": "https://github.com/tryVital/vital-health-react-native/issues"
-  },
-  "homepage": "https://github.com/tryVital/vital-health-react-native#readme",
+  "repository": "https://github.com/marcpenche-holo/vital-react-native",
+  "author": "Holo (forked from Vital)",
+  "homepage": "https://github.com/marcpenche-holo/vital-react-native#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "dependencies": {
     "@tryvital/vital-core-react-native": "5.3.3"

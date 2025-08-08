@@ -12,7 +12,9 @@ Pod::Spec.new do |s|
   s.authors      = package["author"]
 
   s.platforms    = { :ios => "14.0" }
-  s.source       = { :git => "https://github.com/tryVital/vital-react-native.git", :tag => "#{s.version}" }
+  s.source = { :path => "." }
+  
+  s.swift_version = "5.0"
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
