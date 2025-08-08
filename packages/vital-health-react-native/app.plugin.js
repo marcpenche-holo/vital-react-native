@@ -5,7 +5,12 @@ const {
   withAppDelegate,
 } = require('@expo/config-plugins');
 const { withPlugins } = require('@expo/config-plugins');
-const { addObjcImports, insertContentsInsideObjcFunctionBlock } = require('@expo/config-plugins/build/ios/codeMod');
+const {
+  addObjcImports,
+  insertContentsInsideObjcFunctionBlock,
+  addSwiftImports,
+  insertContentsInsideSwiftFunctionBlock,
+} = require('@expo/config-plugins/build/ios/codeMod');
 
 const HEALTH_SHARE = 'Allow $(PRODUCT_NAME) to check health info';
 
@@ -48,15 +53,25 @@ const withHealthKit = (config, { healthSharePermission } = {}) => {
   });
 
   config = withAppDelegate(config, (config) => {
-		let source = config.modResults.contents;
+    let source = config.modResults.contents;
 
-    source = addObjcImports(source, ['"VitalHealthKitConfiguration.h"']);
-    source = insertContentsInsideObjcFunctionBlock(
-      source,
-      'application didFinishLaunchingWithOptions:',
-      '[VitalHealthKitConfiguration automaticConfiguration];',
-      { position: "head" },
-    );
+    if (config.modResults.language === 'swift') {
+      source = addSwiftImports(source, ['VitalHealthKit']);
+      source = insertContentsInsideSwiftFunctionBlock(
+        source,
+        'application(_:didFinishLaunchingWithOptions:)',
+        'VitalHealthKitClient.automaticConfiguration()',
+        { position: 'head' }
+      );
+    } else {
+      source = addObjcImports(source, ['"VitalHealthKitConfiguration.h"']);
+      source = insertContentsInsideObjcFunctionBlock(
+        source,
+        'application didFinishLaunchingWithOptions:',
+        '[VitalHealthKitConfiguration automaticConfiguration];',
+        { position: "head" },
+      );
+    }
 
     config.modResults.contents = source;
     return config;
@@ -85,3 +100,4 @@ const withHealthConnect = function androidManifestPlugin(config) {
 
 module.exports = (config) =>
   withPlugins(config, [[withHealthKit], [withHealthConnect]]);
+
